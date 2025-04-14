@@ -994,7 +994,9 @@ starttButton.addEventListener('click', function() {
    async function saveScoreToGoogleSheet(nama, skor) {
   const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwdIKq-ZvAbXEklMbPm31CYXSSrXN43ryzdI9RfQ_HHPh3AMSqN945YID6jmEs-y0UyjQ/exec"; // Ganti dengan URL deploy terbaru
   
-  try {
+ try {
+    console.log("Mengirim data ke:", WEB_APP_URL); // 👈 Debug 1
+    
     const response = await fetch(WEB_APP_URL, {
       method: 'POST',
       headers: {
@@ -1004,21 +1006,27 @@ starttButton.addEventListener('click', function() {
         nama: nama,
         skor: skor
       }),
-      redirect: 'follow'
+      redirect: 'follow' // Izinkan redirect (penting untuk Google Apps Script)
     });
 
-    const result = await response.json();
+    console.log("Response status:", response.status); // 👈 Debug 2
     
-    if (result.error) {
-      console.error("Server error:", result.error);
-      alert("Gagal menyimpan: " + result.error);
-    } else {
-      console.log("Server response:", result);
-      alert("Data berhasil disimpan!");
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
+
+    const result = await response.json();
+    console.log("Server response:", result); // 👈 Debug 3
+    
+    return result;
+    
   } catch (error) {
-    console.error("Network error:", error);
-    alert("Koneksi gagal. Cek konsol untuk detail.");
+    console.error("Full error details:", {
+      errorName: error.name,
+      message: error.message,
+      stack: error.stack
+    });
+    throw error; // Re-throw untuk ditangkap oleh caller
   }
 }
     function endGame() {

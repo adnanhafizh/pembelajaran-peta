@@ -991,6 +991,26 @@ starttButton.addEventListener('click', function() {
         totalScoreElement.textContent = totalScore;
     }
 
+    function saveScoreToGoogleSheet(nama, skor) {
+      const url = "URL_WEB_APP_ANDA"; // Ganti dengan URL Web App Anda
+      
+      const data = {
+        nama: nama,
+        skor: skor
+      };
+      
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.text())
+      .then(data => console.log('Data tersimpan:', data))
+      .catch((error) => console.error('Error:', error));
+    }
+
     function endGame() {
         gameContent.style.display = 'none';
         gameResults.style.display = 'block';
@@ -1040,6 +1060,7 @@ starttButton.addEventListener('click', function() {
             </div>
         `;
         document.getElementById('startGame').addEventListener('click', startGame);
+        saveScoreToGoogleSheet(userName, totalScore);
     }
 
     function showChildFriendlyError(error) {

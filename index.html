@@ -991,44 +991,6 @@ starttButton.addEventListener('click', function() {
         totalScoreElement.textContent = totalScore;
     }
 
-   async function saveScoreToGoogleSheet(nama, skor) {
-  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwdIKq-ZvAbXEklMbPm31CYXSSrXN43ryzdI9RfQ_HHPh3AMSqN945YID6jmEs-y0UyjQ/exec"; // Ganti dengan URL deploy terbaru
-  
- try {
-    console.log("Mengirim data ke:", WEB_APP_URL); // 👈 Debug 1
-    
-    const response = await fetch(WEB_APP_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        nama: nama,
-        skor: skor
-      }),
-      redirect: 'follow' // Izinkan redirect (penting untuk Google Apps Script)
-    });
-
-    console.log("Response status:", response.status); // 👈 Debug 2
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const result = await response.json();
-    console.log("Server response:", result); // 👈 Debug 3
-    
-    return result;
-    
-  } catch (error) {
-    console.error("Full error details:", {
-      errorName: error.name,
-      message: error.message,
-      stack: error.stack
-    });
-    throw error; // Re-throw untuk ditangkap oleh caller
-  }
-}
     function endGame() {
         gameContent.style.display = 'none';
         gameResults.style.display = 'block';
@@ -1078,15 +1040,6 @@ starttButton.addEventListener('click', function() {
             </div>
         `;
         document.getElementById('startGame').addEventListener('click', startGame);
-        
-        // Di fungsi endGame():
-try {
-  await saveScoreToGoogleSheet(userName, totalScore);
-  alert("Data berhasil disimpan!");
-} catch (error) {
-  console.error("Gagal menyimpan:", error);
-  alert(`Gagal menyimpan: ${error.message}`);
-}
     }
 
     function showChildFriendlyError(error) {

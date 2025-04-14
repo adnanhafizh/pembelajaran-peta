@@ -991,26 +991,36 @@ starttButton.addEventListener('click', function() {
         totalScoreElement.textContent = totalScore;
     }
 
-    function saveScoreToGoogleSheet(nama, skor) {
-      const url = "URL_WEB_APP_ANDA"; // Ganti dengan URL Web App Anda
-      
-      const data = {
+   async function saveScoreToGoogleSheet(nama, skor) {
+  const WEB_APP_URL = "URL_APPS_SCRIPT_WEB_APP"; // Ganti dengan URL deploy terbaru
+  
+  try {
+    const response = await fetch(WEB_APP_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
         nama: nama,
         skor: skor
-      };
-      
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-      })
-      .then(response => response.text())
-      .then(data => console.log('Data tersimpan:', data))
-      .catch((error) => console.error('Error:', error));
-    }
+      }),
+      redirect: 'follow'
+    });
 
+    const result = await response.json();
+    
+    if (result.error) {
+      console.error("Server error:", result.error);
+      alert("Gagal menyimpan: " + result.error);
+    } else {
+      console.log("Server response:", result);
+      alert("Data berhasil disimpan!");
+    }
+  } catch (error) {
+    console.error("Network error:", error);
+    alert("Koneksi gagal. Cek konsol untuk detail.");
+  }
+}
     function endGame() {
         gameContent.style.display = 'none';
         gameResults.style.display = 'block';

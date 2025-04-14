@@ -1078,7 +1078,15 @@ starttButton.addEventListener('click', function() {
             </div>
         `;
         document.getElementById('startGame').addEventListener('click', startGame);
-        saveScoreToGoogleSheet(userName, totalScore);
+        
+        // Di fungsi endGame():
+try {
+  await saveScoreToGoogleSheet(userName, totalScore);
+  alert("Data berhasil disimpan!");
+} catch (error) {
+  console.error("Gagal menyimpan:", error);
+  alert(`Gagal menyimpan: ${error.message}`);
+}
     }
 
     function showChildFriendlyError(error) {

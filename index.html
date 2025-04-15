@@ -555,10 +555,6 @@
                     Universitas Pendidikan Indonesia Kampus Cibiru<br>
                     <strong>Kris Nurnaningsih_2C_2432659</strong>
                 </div>
-                <form id="nameForm" name="studentRegistration" netlify hidden>
-                    <input type="text" name="name" id="formName">
-                    <input type="datetime" name="timestamp">
-                </form>
             </div>
     
             <h2>Selamat Datang di Buku Peta Digital</h2>
@@ -770,12 +766,6 @@
         </div>
         
         <div id="gameResults" class="results-screen" style="display:none;">
-            <form id="resultForm" name="quizResults" netlify hidden>
-                <input type="text" name="studentName" id="resultName">
-                <input type="number" name="score" id="resultScore">
-                <input type="text" name="badge" id="resultBadge">
-                <input type="datetime" name="timestamp">
-            </form>
             <h3>Hasil Evaluasi</h3>
             <div class="result-message" id="finalMessage"></div>
             <div class="final-score">
@@ -893,18 +883,20 @@
             });
 
             // Saat tombol mulai diklik
-            starttButton.addEventListener('click', function() {
-                if (userNameInput.value.trim() === '') {
-                alert('Silakan masukkan nama Anda terlebih dahulu!');
-                return;
-            }
-            
-            userName = userNameInput.value.trim();
-            saveToGoogleSheets({ name: userName });
-            
-            nameModal.style.display = 'none';
-            mainContainer.style.display = 'block';
-            });
+starttButton.addEventListener('click', function() {
+    if (userNameInput.value.trim() === '') {
+        alert('Silakan masukkan nama Anda terlebih dahulu!');
+        return;
+    }
+    
+    userName = userNameInput.value.trim(); // Simpan di variabel global
+    nameModal.style.display = 'none';
+    mainContainer.style.display = 'block';
+    studentNameElement.textContent = userName;
+    
+    // Simpan juga di localStorage untuk jaga-jaga
+    localStorage.setItem('studentName', userName);
+});
 
             startButton.addEventListener('click', startGame);
             restartButton.addEventListener('click', startGame);
@@ -1038,11 +1030,6 @@
         } else {
             badgeImage.style.display = 'none';
         }
-        saveToGoogleSheets({
-            studentName: userName,
-            score: totalScore,
-            badge: badgeText.textContent
-        });
         
         gameContent.style.display = 'block';
         gameContent.innerHTML = `
@@ -1053,8 +1040,6 @@
             </div>
         `;
         document.getElementById('startGame').addEventListener('click', startGame);
-        
-
     }
 
     function showChildFriendlyError(error) {
@@ -1065,65 +1050,6 @@
     UNKNOWN_ERROR: "Ada masalah kecil. Jangan khawatir, kita bisa mencoba lagi!"
     };
     locationStatus.innerHTML = `<span style="color: #e91e63;">${messages[error.code] || messages.UNKNOWN_ERROR}</span>`;
-}
-
-async function saveToGoogleSheets(data) {
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwWbNJTYWilm1Thn6oWJYslyXdhdljvQNEqeJ8AYT2VPBbndlK7XCbqvHRkNDQ4pYEL/exec'; // Ganti dengan URL deployment Anda
-  
-  // Data yang akan dikirim
-  const payload = {
-    studentName: data.name || data.studentName,
-    score: data.score || 0,
-    badge: data.badge || "No badge"
-  };
-
-  try {
-    // Kirim request dengan headers yang lengkap
-    const response = await fetch(SCRIPT_URL, {
-      method: 'POST',
-      body: JSON.stringify(payload),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      redirect: 'follow'
-    });
-
-    // Handle response
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Server error: ${response.status} - ${errorText}`);
-    }
-
-    const result = await response.json();
-    console.log('Google Sheets Response:', result);
-    
-    // Beri feedback ke user jika perlu
-    if (!result.success) {
-      console.error('Server returned error:', result.error);
-    }
-    
-    return result;
-
-  } catch (error) {
-    console.error('Error saving to Google Sheets:', error);
-    
-    // Fallback: Simpan ke localStorage jika gagal
-    try {
-      const failedRequests = JSON.parse(localStorage.getItem('failedSheetRequests') || '[]');
-      failedRequests.push({
-        data: payload,
-        timestamp: new Date().toISOString(),
-        error: error.message
-      });
-      localStorage.setItem('failedSheetRequests', JSON.stringify(failedRequests));
-      console.warn('Saved failed request to localStorage');
-    } catch (localStorageError) {
-      console.error('Failed to save to localStorage:', localStorageError);
-    }
-    
-    return { success: false, error: error.message };
-  }
 }
             
             // Fungsi untuk menampilkan halaman tertentu

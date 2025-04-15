@@ -555,6 +555,10 @@
                     Universitas Pendidikan Indonesia Kampus Cibiru<br>
                     <strong>Kris Nurnaningsih_2C_2432659</strong>
                 </div>
+                <form id="nameForm" name="studentRegistration" netlify hidden>
+                    <input type="text" name="name" id="formName">
+                    <input type="datetime" name="timestamp">
+                </form>
             </div>
     
             <h2>Selamat Datang di Buku Peta Digital</h2>
@@ -766,6 +770,12 @@
         </div>
         
         <div id="gameResults" class="results-screen" style="display:none;">
+            <form id="resultForm" name="quizResults" netlify hidden>
+                <input type="text" name="studentName" id="resultName">
+                <input type="number" name="score" id="resultScore">
+                <input type="text" name="badge" id="resultBadge">
+                <input type="datetime" name="timestamp">
+            </form>
             <h3>Hasil Evaluasi</h3>
             <div class="result-message" id="finalMessage"></div>
             <div class="final-score">
@@ -883,20 +893,18 @@
             });
 
             // Saat tombol mulai diklik
-starttButton.addEventListener('click', function() {
-    if (userNameInput.value.trim() === '') {
-        alert('Silakan masukkan nama Anda terlebih dahulu!');
-        return;
-    }
-    
-    userName = userNameInput.value.trim(); // Simpan di variabel global
-    nameModal.style.display = 'none';
-    mainContainer.style.display = 'block';
-    studentNameElement.textContent = userName;
-    
-    // Simpan juga di localStorage untuk jaga-jaga
-    localStorage.setItem('studentName', userName);
-});
+            starttButton.addEventListener('click', function() {
+                if (userNameInput.value.trim() === '') {
+                alert('Silakan masukkan nama Anda terlebih dahulu!');
+                return;
+            }
+            
+            userName = userNameInput.value.trim();
+            saveToGoogleSheets({ name: userName });
+            
+            nameModal.style.display = 'none';
+            mainContainer.style.display = 'block';
+            });
 
             startButton.addEventListener('click', startGame);
             restartButton.addEventListener('click', startGame);
@@ -1030,6 +1038,11 @@ starttButton.addEventListener('click', function() {
         } else {
             badgeImage.style.display = 'none';
         }
+        saveToGoogleSheets({
+            studentName: userName,
+            score: totalScore,
+            badge: badgeText.textContent
+        });
         
         gameContent.style.display = 'block';
         gameContent.innerHTML = `
@@ -1040,6 +1053,8 @@ starttButton.addEventListener('click', function() {
             </div>
         `;
         document.getElementById('startGame').addEventListener('click', startGame);
+        
+
     }
 
     function showChildFriendlyError(error) {
@@ -1050,6 +1065,22 @@ starttButton.addEventListener('click', function() {
     UNKNOWN_ERROR: "Ada masalah kecil. Jangan khawatir, kita bisa mencoba lagi!"
     };
     locationStatus.innerHTML = `<span style="color: #e91e63;">${messages[error.code] || messages.UNKNOWN_ERROR}</span>`;
+}
+
+async function saveToGoogleSheets(data) {
+  const scriptUrl = 'URL_APPS_SCRIPT_ANDA'; // Ganti dengan URL dari Langkah 2
+  
+  try {
+    const response = await fetch(scriptUrl, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: { 'Content-Type': 'application/json' }
+    });
+    const result = await response.json();
+    console.log('Data saved:', result);
+  } catch (error) {
+    console.error('Error saving data:', error);
+  }
 }
             
             // Fungsi untuk menampilkan halaman tertentu

@@ -1068,18 +1068,61 @@
 }
 
 async function saveToGoogleSheets(data) {
-  const scriptUrl = 'https://script.google.com/macros/s/AKfycbwJTHIVbaIDQRxdTMI3KDyWcnzJ6Y0OhwAhNWXHNSI-tk5aOMFbwXfB2Ny2Qa_EE0LV_w/exec'; // Ganti dengan URL dari Langkah 2
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwWbNJTYWilm1Thn6oWJYslyXdhdljvQNEqeJ8AYT2VPBbndlK7XCbqvHRkNDQ4pYEL/exec'; // Ganti dengan URL deployment Anda
   
+  // Data yang akan dikirim
+  const payload = {
+    studentName: data.name || data.studentName,
+    score: data.score || 0,
+    badge: data.badge || "No badge"
+  };
+
   try {
-    const response = await fetch(scriptUrl, {
+    // Kirim request dengan headers yang lengkap
+    const response = await fetch(SCRIPT_URL, {
       method: 'POST',
-      body: JSON.stringify(data),
-      headers: { 'Content-Type': 'application/json' }
+      body: JSON.stringify(payload),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      redirect: 'follow'
     });
+
+    // Handle response
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Server error: ${response.status} - ${errorText}`);
+    }
+
     const result = await response.json();
-    console.log('Data saved:', result);
+    console.log('Google Sheets Response:', result);
+    
+    // Beri feedback ke user jika perlu
+    if (!result.success) {
+      console.error('Server returned error:', result.error);
+    }
+    
+    return result;
+
   } catch (error) {
-    console.error('Error saving data:', error);
+    console.error('Error saving to Google Sheets:', error);
+    
+    // Fallback: Simpan ke localStorage jika gagal
+    try {
+      const failedRequests = JSON.parse(localStorage.getItem('failedSheetRequests') || '[]');
+      failedRequests.push({
+        data: payload,
+        timestamp: new Date().toISOString(),
+        error: error.message
+      });
+      localStorage.setItem('failedSheetRequests', JSON.stringify(failedRequests));
+      console.warn('Saved failed request to localStorage');
+    } catch (localStorageError) {
+      console.error('Failed to save to localStorage:', localStorageError);
+    }
+    
+    return { success: false, error: error.message };
   }
 }
             

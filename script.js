@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 "50 km di dunia nyata"
             ],
             correctAnswer: 1,
-            points: 30
+            points: 20
         },
         {
             question: "Simbol warna biru pada peta biasanya menunjukkan...",
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 "Daftar harga"
             ],
             correctAnswer: 0,
-            points: 30
+            points: 20
         },
         {
             question: "Peta digital pertama dikembangkan oleh negara...",
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 "Inggris"
             ],
             correctAnswer: 1,
-            points: 40
+            points: 20
         }
     ];
     // Game Variables
@@ -247,7 +247,7 @@ if (greetingElement) {
 let message = '';
 let badge = '';
 
-if (totalScore >= 120) {
+if (totalScore >= 100) {
     message = `${userName}, luar biasa! Kamu ahli membaca peta! 🎉`;
     badge = "https://png.pngtree.com/png-clipart/20230904/original/pngtree-golden-award-badge-vector-png-image_10831870.png"; // Gold badge
     badgeText.textContent = "Kamu mendapatkan Lencana Emas!";

@@ -4,544 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buku Peta Digital - Kelas 4 SD</title>
-    <style>
-        :root {
-            --primary-color: #4CAF50;
-            --primary-dark: #2E7D32;
-            --secondary-color: #2196F3;
-            --light-bg: #E8F5E9;
-            --light-blue: #E3F2FD;
-            --text-color: #333;
-            --light-text: #666;
-            --white: #ffffff;
-            --shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
-        body {
-            font-family: 'Arial', sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: #f9f9f9;
-            min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-            display: none;
-        }
-        
-        header {
-            text-align: center;
-            background-color: var(--primary-color);
-            color: var(--white);
-            padding: 20px;
-            border-radius: 10px 10px 0 0;
-            margin-bottom: 0;
-        }
-        
-        h1 {
-            margin: 0;
-            font-size: clamp(1.5rem, 4vw, 1.75rem);
-        }
-        
-        h2 {
-            color: var(--primary-dark);
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 5px;
-            margin-top: 20px;
-            font-size: clamp(1.3rem, 3vw, 1.5rem);
-        }
-        
-        h3 {
-            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
-            margin: 15px 0 10px;
-        }
-        
-        .page-container {
-            position: relative;
-            min-height: 60vh;
-        }
-        
-        .page {
-            background-color: var(--white);
-            padding: 20px;
-            margin-bottom: 0;
-            border-radius: 0 0 10px 10px;
-            box-shadow: var(--shadow);
-            display: none;
-        }
-        
-        .page.active {
-            display: block;
-        }
-        
-        img, video {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 15px auto;
-            border-radius: 5px;
-        }
-        
-        .illustration {
-            text-align: center;
-            font-style: italic;
-            color: var(--light-text);
-            margin-top: -10px;
-            font-size: 0.9rem;
-        }
-        
-        .activity {
-            background-color: var(--light-bg);
-            padding: 15px;
-            border-left: 5px solid var(--primary-color);
-            margin: 20px 0;
-            border-radius: 0 5px 5px 0;
-        }
-        
-        .fun-fact {
-            background-color: var(--light-blue);
-            padding: 15px;
-            border-left: 5px solid var(--secondary-color);
-            margin: 20px 0;
-            border-radius: 0 5px 5px 0;
-        }
-        
-        .navigation-bar {
-            display: flex;
-            justify-content: space-between;
-            background-color: var(--primary-dark);
-            padding: 12px 20px;
-            border-radius: 0 0 10px 10px;
-            margin-top: 0;
-        }
-        
-        .nav-button {
-            background-color: var(--white);
-            color: var(--primary-dark);
-            padding: 8px 15px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            border: 2px solid var(--primary-dark);
-            transition: all 0.3s;
-            cursor: pointer;
-            font-size: 0.9rem;
-            min-width: 100px;
-            text-align: center;
-        }
-        
-        .nav-button:hover {
-            background-color: var(--primary-dark);
-            color: var(--white);
-        }
-        
-        .nav-button:disabled {
-            background-color: #cccccc;
-            color: #666666;
-            border-color: #666666;
-            cursor: not-allowed;
-        }
-        
-        .page-indicator {
-            color: var(--white);
-            font-weight: bold;
-            align-self: center;
-            font-size: 0.9rem;
-            padding: 0 10px;
-            text-align: center;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-            font-size: 0.9rem;
-        }
-        
-        th {
-            background-color: var(--light-bg);
-            text-align: left;
-            padding: 10px;
-        }
-        
-        td {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        
-        ul, ol {
-            padding-left: 20px;
-            margin: 10px 0;
-        }
-        
-        li {
-            margin-bottom: 8px;
-        }
-        
-        p {
-            margin-bottom: 15px;
-        }
-        
-        /* Play button styles */
-        .play-button {
-            display: block;
-            width: 200px;
-            margin: 30px auto;
-            padding: 15px 25px;
-            font-size: 1.2rem;
-            background-color: #FF5722;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        
-        .play-button:hover {
-            background-color: #E64A19;
-            transform: scale(1.05);
-        }
-        
-        .play-button i {
-            margin-right: 10px;
-        }
-        
-        .location-status {
-            text-align: center;
-            margin: 15px 0;
-            font-style: italic;
-            color: var(--light-text);
-            min-height: 60px;
-        }
-
-        .error-message {
-            color: #e91e63;
-            font-weight: bold;
-        }
-
-        .game-container {
-        background-color: #E8F5E9;
-        padding: 20px;
-        border-radius: 10px;
-        margin: 20px 0;
-        text-align: center;
-    }
-    
-    .game-header {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 20px;
-        font-size: 18px;
-        font-weight: bold;
-    }
-    
-    .score-display {
-        color: #4CAF50;
-    }
-    
-    .level-display {
-        color: #2196F3;
-    }
-    
-    .game-button {
-        background-color: #4CAF50;
-        color: white;
-        padding: 12px 25px;
-        border: none;
-        border-radius: 25px;
-        font-size: 16px;
-        cursor: pointer;
-        margin: 10px;
-        transition: all 0.3s;
-    }
-    
-    .game-button:hover {
-        background-color: #388E3C;
-        transform: scale(1.05);
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
-    
-    .question-container {
-        background-color: white;
-        padding: 20px;
-        border-radius: 10px;
-        margin: 15px 0;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        animation: fadeIn 0.5s ease-in;
-    }
-    
-    .question-text {
-        font-size: 18px;
-        margin-bottom: 15px;
-    }
-    
-    .options-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-top: 15px;
-    }
-    
-    .option-button {
-        padding: 10px;
-        background-color: #f5f5f5;
-        border: 2px solid #ddd;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-    
-    .option-button:hover {
-        background-color: #e0e0e0;
-    }
-    
-    .option-button.correct {
-        background-color: #C8E6C9;
-        border-color: #4CAF50;
-    }
-    
-    .option-button.incorrect {
-        background-color: #FFCDD2;
-        border-color: #F44336;
-    }
-    
-    .feedback-message {
-        margin: 15px 0;
-        padding: 10px;
-        border-radius: 5px;
-        font-weight: bold;
-    }
-    
-    .correct-feedback {
-        background-color: #E8F5E9;
-        color: #2E7D32;
-    }
-    
-    .incorrect-feedback {
-        background-color: #FFEBEE;
-        color: #C62828;
-    }
-    
-    .results-screen {
-        background-color: white;
-        padding: 20px;
-        border-radius: 10px;
-        margin-top: 20px;
-    }
-    
-    .final-score {
-        font-size: 24px;
-        font-weight: bold;
-        margin: 20px 0;
-        color: #4CAF50;
-    }
-
-    /* Gaya untuk modal input nama */
-    .modal {
-            display: flex;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            font-family: 'Arial', sans-serif;
-        }
-
-        .modal-content {
-            background-color: white;
-            padding: 30px 40px; /* Padding disesuaikan */
-            border-radius: 15px;
-            text-align: center;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Konten form */
-        .modal-content h2 {
-            color: #2E7D32;
-            margin-bottom: 15px;
-            font-size: 1.8em;
-            order: 1;
-        }
-        .modal-content p {
-            color: #555;
-            margin-bottom: 20px;
-            font-size: 1.1em;
-            order: 2;
-        }       
-
-        .modal-content input {
-            width: 100%;
-            padding: 12px 15px;
-            margin: 15px 0;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border 0.3s;
-            order: 3;
-        }
-
-        .modal-content input:focus {
-            border-color: #4CAF50;
-            outline: none;
-        }
-
-        .modal-content button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 10px;
-            width: 100%;
-            order: 4;
-        }
-
-        /* Logo dan dosen di atas */
-        .upi-logo-container {
-            order: -1; /* Memaksa elemen ke posisi pertama */
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #eee;
-        }
-
-
-        .upi-logo {
-            max-width: 120px;
-            height: auto;
-            margin: 0 auto 10px;
-        }
-
-        .dosen-info {
-            font-size: 0.9em;
-            color: #666;
-            margin-top: 10px;
-            line-height: 1.4;
-        }
-
-        .modal-content button:hover {
-            background-color: #388E3C;
-            transform: translateY(-2px);
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-            
-            header {
-                padding: 15px 10px;
-            }
-            
-            .page {
-                padding: 15px;
-            }
-            
-            .navigation-bar {
-                padding: 10px;
-            }
-            
-            .nav-button {
-                padding: 6px 10px;
-                min-width: 80px;
-                font-size: 0.8rem;
-            }
-            
-            table {
-                font-size: 0.8rem;
-            }
-            
-            .play-button {
-                width: 160px;
-                padding: 12px 20px;
-                font-size: 1rem;
-            }
-        }
-
-         /* Responsif untuk mobile */
-    @media (max-width: 600px) {
-        .options-container {
-            grid-template-columns: 1fr;
-        }
-        
-        .game-button {
-            padding: 10px 20px;
-        }
-
-        .modal-content {
-                padding: 30px 20px;
-                width: 95%;
-            }
-            
-            .modal-content h2 {
-                font-size: 1.5em;
-            }
-
-    }
-        
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 1.3rem;
-            }
-            
-            h2 {
-                font-size: 1.2rem;
-            }
-            
-            .nav-button {
-                min-width: 70px;
-                padding: 5px 8px;
-            }
-            
-            .page-indicator {
-                font-size: 0.8rem;
-            }
-            
-            .activity, .fun-fact {
-                padding: 10px;
-            }
-            
-            .play-button {
-                width: 140px;
-                padding: 10px 15px;
-                font-size: 0.9rem;
-            }
-        }
-    </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css"> <!-- Tambahkan ini -->
 </head>
+<script src="script.js"></script>
 <body>
-
     <div id="nameModal" class="modal">
         <div class="modal-content">
             <!-- Logo dan info dosen dipindahkan ke atas -->
@@ -588,19 +55,15 @@
             <div class="page" id="page2">
                 <h2>Jenis-Jenis Peta</h2>
                 <p>Ada berbagai macam peta yang digunakan untuk keperluan berbeda. Mari kita kenali beberapa jenis peta:</p>
-                
                 <h3>1. Peta Dunia</h3>
                 <p>Menunjukkan seluruh permukaan bumi dengan benua dan samudera.</p>
                 <img src="https://www.pengetahuan.id/wp-content/uploads/2025/01/peta-dunia-780x470.jpg" alt="Peta Dunia">
-                
                 <h3>2. Peta Negara Indonesia</h3>
                 <p>Menunjukkan wilayah suatu negara beserta provinsi atau negara bagiannya.</p>
                 <img src="https://awsimages.detik.net.id/community/media/visual/2016/05/25/462dcc0a-8fe9-4208-8881-1e4c61307420_43.jpg?w=1200" alt="Peta Indonesia">
-                
                 <h3>3. Peta Kota</h3>
                 <p>Menunjukkan detail suatu kota dengan jalan, bangunan penting, dan fasilitas umum.</p>
                 <img src="https://www.google.com/maps/vt/data=-oKMaL35w_Ec_CI4yGAodRUO22Sdj6CWprFbjzP9b8ZJLWW7oIpU7UxcIHHHP3gaUA8BO-98M8RiuqX5NzSxe9UlEVJ7SSFzZ7SaNpnaMHfzb3mjgpQbw9IYz7kaHjAScy-wfRtUesMFH0lNtclbGAhpT3iIuAKM9A3L5Tdi8f1Dtk1u5-2hytsui8uRBLSoe3s2Yfyq4xPRD0wpXmOr6KbVF3XxyUDgW3iorlqAuIvSnUiDiyFjSBW4e5J9cTrdFO_WbpGYkuHG2NK-yUhg0Moz0SJhanD69thBUbvAb8pF_xQi8C4iqA" alt="Peta Indonesia">
-                
                 <div class="activity">
                     <strong>Aktivitas:</strong> Coba sebutkan 3 tempat yang biasanya ada di peta kota! (Contoh: sekolah, rumah sakit, taman)
                 </div>
@@ -632,8 +95,6 @@
                 <h2>Simbol-Simbol dalam Peta</h2>
                 <p>Peta menggunakan berbagai simbol untuk mewakili objek di dunia nyata. Berikut beberapa contoh simbol umum:</p>
                 
-                <!--<img src="https://via.placeholder.com/600x300?text=Simbol-Simbol+Peta" alt="Simbol-simbol peta">
-            -->
                 <table>
                     <tr>
                         <th>Simbol</th>
@@ -666,21 +127,69 @@
                 </div>
             </div>
 
-            <!-- Halaman 5 -->
+            <!-- Halaman 5 (Versi hanya gambar) -->
             <div class="page" id="page5">
                 <h2>Membaca Peta Dengan Benar</h2>
-                
                 <!-- Gambar Peta (Ganti dengan URL gambar yang Anda inginkan) -->
-                <img src="peta-1.jpg" alt="Peta Indonesia">
+                <img src="images/peta-1.jpg" alt="Peta Indonesia">
                 <p class="illustration">Gambar 3: Membaca Peta Dengan Benar</p>
+            </div>
+
+            <!-- Halaman 6 - Kuis Arah Peta -->
+            <div class="page" id="page6">
+                <h2>Kuis Membaca Arah Peta</h2>
                 
-                <div class="fun-fact">
-                    <strong>Fakta Seru:</strong> Sebelum ada kompas, orang menggunakan bintang untuk menentukan arah. Bintang Utara (Polaris) selalu menunjukkan arah utara!
+                <div class="quiz-container" style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px;">
+                    <!-- Bagian Kuis (Kiri) -->
+                    <div class="quiz-content" style="flex: 1; min-width: 300px;">
+                        <div class="question-box" style="background: #e8f5e9; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                            <h3 style="color: #2e7d32;">Pertanyaan:</h3>
+                            <p style="font-size: 1.1em;">Perhatikan peta di samping! Arah mana yang kamu tuju dari pasar ke sekolah?</p>
+                        </div>
+
+                        <div class="options-container" style="display: grid; grid-template-columns: 1fr; gap: 10px;">
+                            <button class="option-button" data-correct="false" style="padding: 12px; border: 2px solid #ddd; border-radius: 8px; background: #f5f5f5; cursor: pointer; text-align: left; transition: all 0.3s;">
+                                Barat Laut
+                            </button>
+                            <button class="option-button" data-correct="false" style="padding: 12px; border: 2px solid #ddd; border-radius: 8px; background: #f5f5f5; cursor: pointer; text-align: left; transition: all 0.3s;">
+                                Tenggara
+                            </button>
+                            <button class="option-button" data-correct="true" style="padding: 12px; border: 2px solid #ddd; border-radius: 8px; background: #f5f5f5; cursor: pointer; text-align: left; transition: all 0.3s;">
+                                Timur Laut
+                            </button>
+                            <button class="option-button" data-correct="false" style="padding: 12px; border: 2px solid #ddd; border-radius: 8px; background: #f5f5f5; cursor: pointer; text-align: left; transition: all 0.3s;">
+                                Barat Daya
+                            </button>
+                        </div>
+                        
+                        <div id="quiz-feedback" style="margin-top: 20px; padding: 15px; border-radius: 8px; display: none;"></div>
+                    </div>
+                    
+                    <!-- Bagian Gambar Peta (Kanan) -->
+                    <div class="map-image" style="flex: 1; min-width: 300px; display: flex; align-items: center; justify-content: center;">
+                        <img src="images/peta-pasar-ke-sekolah.jpg" alt="Peta untuk Kuis" style="max-width: 150%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                    </div>
+                </div>
+                
+                <div class="fun-fact" style="margin-top: 30px;">
+                    <strong>Fakta Seru:</strong> Arah mata angin sebenarnya ada 16, bukan hanya 8! Ada arah seperti Utara Timur Laut (UTL) dan Timur Menenggara (TMT).
+                </div>
+            </div>
+            
+            <!-- Halaman 7 - Gambar Peta Saja -->
+            <div class="page" id="page7">
+                <h2>Jawaban</h2>
+                
+                <!-- Gambar Utama -->
+                <div style="text-align: center; margin: 20px 0;">
+                    <img src="images/jawaban-peta-timur-laut.jpg" alt="Jawaban Peta Timur Laut" 
+                        style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                    <p class="illustration">Gambar 8: Jawaban</p>
                 </div>
             </div>
 
             <!-- Halaman 6 -->
-            <div class="page" id="page6">
+            <div class="page" id="page8">
                 <h2>Mari Bermain dengan Peta Digital!</h2>
                 <p>Sekarang kita akan mencoba menggunakan peta digital untuk melihat lokasi kita saat ini di Bumi!</p>
                 
@@ -693,22 +202,19 @@
                         <li>Anda akan melihat lokasi Anda saat ini di peta!</li>
                     </ol>
                 </div>
-                
                 <button id="playButton" class="play-button">
                     <i class="fas fa-map-marked-alt"></i> Mari Bermain
                 </button>
-                
                 <div id="locationStatus" class="location-status">
                     Klik tombol di atas untuk memulai petualangan peta!
                 </div>
-                
                 <div class="fun-fact">
-                    <strong>Fakta Seru:</strong> Google Maps menggunakan satelit dan foto udara untuk menampilkan gambar 3D. Beberapa kota besar bahkan memiliki bangunan 3D yang sangat detail!
+                    <strong>Aktivitas: </strong> Mari coba bermain, cari pasar dan coba arahkan menuju sekolah!
                 </div>
             </div>
 
-           <!-- Halaman 7 -->
-            <div class="page" id="page7">
+            <!-- Halaman 7 -->
+            <div class="page" id="page9">
                 <h2>Peta Digital</h2>
                 <p>Di zaman modern ini, kita juga bisa menggunakan peta digital seperti Google Maps atau Waze.</p>
                 
@@ -728,447 +234,47 @@
             </div>
 
         <!-- Halaman 8 - Evaluasi Game -->
-<div class="page" id="page8">
-    <h2>Evaluasi Petualangan Peta</h2>
-    <p>Mari uji pengetahuanmu dengan game seru ini!</p>
-    
-    <div class="game-container">
-        <div class="game-header">
-            <div class="score-display">
-                Skor: <span id="totalScore">0</span>
-            </div>
-            <div class="level-display">
-                Level: <span id="currentLevel">1</span>/5
+        <div class="page" id="page10">
+            <h2>Evaluasi Petualangan Peta</h2>
+            <p>Mari uji pengetahuanmu dengan game seru ini!</p>  
+            <div class="game-container">
+                <div class="game-header">
+                    <div class="score-display">
+                        Skor: <span id="totalScore">0</span>
+                    </div>
+                    <div class="level-display">
+                        Level: <span id="currentLevel">1</span>/5
+                    </div>
+                </div>
+                
+                <div id="gameContent">
+                    <!-- Konten game akan dimuat di sini -->
+                    <div class="welcome-screen">
+                        <h3>Petualangan Evaluasi Peta</h3>
+                        <p>Jawab pertanyaan dengan benar untuk mendapatkan poin!</p>
+                        <button id="startGame" class="game-button">Mulai Game</button>
+                    </div>
+                </div>
+                
+                <div id="gameResults" class="results-screen" style="display:none;">
+                    <h3>Hasil Evaluasi</h3>
+                    <div class="result-message" id="finalMessage"></div>
+                    <div class="final-score">
+                        Skor Akhir: <span id="finalScore">0</span>
+                    </div>
+                    <div class="badge-earned">
+                        <img id="badgeImage" src="" alt="Lencana" style="width:100px; display:none;">
+                        <p id="badgeText"></p>
+                    </div>
+                    <button id="restartGame" class="game-button">Main Lagi</button>
+                </div>
             </div>
         </div>
-        
-        <div id="gameContent">
-            <!-- Konten game akan dimuat di sini -->
-            <div class="welcome-screen">
-                <h3>Petualangan Evaluasi Peta</h3>
-                <p>Jawab pertanyaan dengan benar untuk mendapatkan poin!</p>
-                <button id="startGame" class="game-button">Mulai Game</button>
-            </div>
-        </div>
-        
-        <div id="gameResults" class="results-screen" style="display:none;">
-            <h3>Hasil Evaluasi</h3>
-            <div class="result-message" id="finalMessage"></div>
-            <div class="final-score">
-                Skor Akhir: <span id="finalScore">0</span>
-            </div>
-            <div class="badge-earned">
-                <img id="badgeImage" src="" alt="Lencana" style="width:100px; display:none;">
-                <p id="badgeText"></p>
-            </div>
-            <button id="restartGame" class="game-button">Main Lagi</button>
-        </div>
-    </div>
-</div>
-
         <div class="navigation-bar">
             <button class="nav-button" id="prevBtn" disabled>Sebelumnya</button>
             <span class="page-indicator" id="pageIndicator">Halaman 1 dari 8</span>
             <button class="nav-button" id="nextBtn">Selanjutnya</button>
         </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const pages = document.querySelectorAll('.page');
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-            const pageIndicator = document.getElementById('pageIndicator');
-            let userName = "";
-            // Tangkap elemen modal dan tombol
-            const nameModal = document.getElementById('nameModal');
-            const starttButton = document.getElementById('starttButton');
-            const userNameInput = document.getElementById('userName');
-            const mainContainer = document.querySelector('.container');
-            const playButton = document.getElementById('playButton');
-            const locationStatus = document.getElementById('locationStatus');
-            const gameQuestions = [
-                {
-                    question: "Apa fungsi utama dari legenda dalam peta?",
-                    options: [
-                        "Menunjukkan arah utara",
-                        "Menjelaskan arti simbol-simbol peta",
-                        "Menentukan skala peta",
-                        "Memberi judul peta"
-                    ],
-                    correctAnswer: 1,
-                    points: 20
-                },
-                {
-                    question: "Jika skala peta 1:50.000, berarti 1 cm di peta sama dengan...",
-                    options: [
-                        "50 cm di dunia nyata",
-                        "500 meter di dunia nyata",
-                        "5 km di dunia nyata",
-                        "50 km di dunia nyata"
-                    ],
-                    correctAnswer: 1,
-                    points: 30
-                },
-                {
-                    question: "Simbol warna biru pada peta biasanya menunjukkan...",
-                    options: [
-                        "Gunung",
-                        "Hutan",
-                        "Perairan",
-                        "Jalan raya"
-                    ],
-                    correctAnswer: 2,
-                    points: 20
-                },
-                {
-                    question: "Apa yang harus selalu ada dalam peta yang baik?",
-                    options: [
-                        "Judul, legenda, skala, orientasi",
-                        "Gambar pemandangan",
-                        "Foto pembuat peta",
-                        "Daftar harga"
-                    ],
-                    correctAnswer: 0,
-                    points: 30
-                },
-                {
-                    question: "Peta digital pertama dikembangkan oleh negara...",
-                    options: [
-                        "Amerika Serikat",
-                        "Kanada",
-                        "Jepang",
-                        "Inggris"
-                    ],
-                    correctAnswer: 1,
-                    points: 40
-                }
-            ];
-            // Game Variables
-            let currentQuestion = 0;
-            let totalScore = 0;
-            let gameStarted = false;
-            let currentPage = 0;
-            // DOM Elements
-            const startButton = document.getElementById('startGame');
-            const restartButton = document.getElementById('restartGame');
-            const gameContent = document.getElementById('gameContent');
-            const gameResults = document.getElementById('gameResults');
-            const totalScoreElement = document.getElementById('totalScore');
-            const finalScoreElement = document.getElementById('finalScore');
-            const finalMessageElement = document.getElementById('finalMessage');
-            const currentLevelElement = document.getElementById('currentLevel');
-            const badgeImage = document.getElementById('badgeImage');
-            const badgeText = document.getElementById('badgeText');
-            const totalPages = pages.length;
-
-            // Tampilkan modal saat halaman dimuat
-            window.addEventListener('DOMContentLoaded', function() {
-                nameModal.style.display = 'flex';
-                mainContainer.style.display = 'none';
-            });
-
-            // Saat tombol mulai diklik
-starttButton.addEventListener('click', function() {
-    if (userNameInput.value.trim() === '') {
-        alert('Silakan masukkan nama Anda terlebih dahulu!');
-        return;
-    }
-    
-    userName = userNameInput.value.trim(); // Simpan di variabel global
-    nameModal.style.display = 'none';
-    mainContainer.style.display = 'block';
-    studentNameElement.textContent = userName;
-    
-    // Simpan juga di localStorage untuk jaga-jaga
-    localStorage.setItem('studentName', userName);
-});
-
-            startButton.addEventListener('click', startGame);
-            restartButton.addEventListener('click', startGame);
-
-            function startGame() {
-                currentQuestion = 0;
-                totalScore = 0;
-                gameStarted = true;
-                updateScore();
-                gameResults.style.display = 'none';
-                loadQuestion();
-            }
-
-            function loadQuestion() {
-                if (currentQuestion >= gameQuestions.length) {
-                    endGame();
-                    return;
-                }
-
-                currentLevelElement.textContent = currentQuestion + 1;
-                
-                const question = gameQuestions[currentQuestion];
-                let questionHTML = `
-                    <div class="question-container">
-                        <div class="question-text">${question.question}</div>
-                        <div class="options-container">
-                `;
-
-                question.options.forEach((option, index) => {
-                    questionHTML += `
-                        <button class="option-button" data-index="${index}">
-                            ${option}
-                        </button>
-                    `;
-                });
-
-                questionHTML += `</div></div>`;
-                gameContent.innerHTML = questionHTML;
-
-                // Add event listeners to options
-                document.querySelectorAll('.option-button').forEach(button => {
-                    button.addEventListener('click', function() {
-                        checkAnswer(parseInt(this.getAttribute('data-index')));
-                    });
-                });
-            }
-
-        
-
-        function checkAnswer(selectedIndex) {
-        const question = gameQuestions[currentQuestion];
-        const options = document.querySelectorAll('.option-button');
-        let feedbackMessage = '';
-        
-        if (selectedIndex === question.correctAnswer) {
-            // Correct answer
-            totalScore += question.points;
-            options[selectedIndex].classList.add('correct');
-            feedbackMessage = `
-                <div class="feedback-message correct-feedback">
-                    ✔ Benar! Kamu mendapatkan ${question.points} poin!
-                </div>
-                <button class="game-button" id="nextQuestion">Lanjutkan</button>
-            `;
-        } else {
-            // Wrong answer
-            options[selectedIndex].classList.add('incorrect');
-            options[question.correctAnswer].classList.add('correct');
-            feedbackMessage = `
-                <div class="feedback-message incorrect-feedback">
-                    ✖ Belum tepat! Jawaban benar: ${question.options[question.correctAnswer]}
-                </div>
-                <button class="game-button" id="nextQuestion">Lanjutkan</button>
-            `;
-        }
-        
-        // Disable all options
-        options.forEach(option => {
-            option.style.cursor = 'not-allowed';
-        });
-        
-        gameContent.innerHTML += feedbackMessage;
-        updateScore();
-        
-        document.getElementById('nextQuestion').addEventListener('click', function() {
-            currentQuestion++;
-            loadQuestion();
-        });
-    }
-
-    function updateScore() {
-        totalScoreElement.textContent = totalScore;
-    }
-
-    function endGame() {
-        gameContent.style.display = 'none';
-        gameResults.style.display = 'block';
-        finalScoreElement.textContent = totalScore;
-        
-         // Tampilkan nama pengguna
-        const greetingElement = document.getElementById('userGreeting');
-        if (greetingElement) {
-            greetingElement.textContent = `Halo, ${userName}! Ini hasil kuis kamu:`;
-        }
-
-        // Determine badge based on score
-        let message = '';
-        let badge = '';
-        
-        if (totalScore >= 120) {
-            message = `${userName}, luar biasa! Kamu ahli membaca peta! 🎉`;
-            badge = "https://png.pngtree.com/png-clipart/20230904/original/pngtree-golden-award-badge-vector-png-image_10831870.png"; // Gold badge
-            badgeText.textContent = "Kamu mendapatkan Lencana Emas!";
-        } else if (totalScore >= 80) {
-            message = `${userName},Bagus sekali! Pengetahuan peta mu sudah baik! 👍`;
-            badge = "https://img.lovepik.com/png/20231126/silver-star-badge-metal-illustrate-shiny_701479_wh860.png"; // Silver badge
-            badgeText.textContent = "Kamu mendapatkan Lencana Perak!";
-        } else if (totalScore >= 40) {
-            message = `${userName}Lumayan! Terus belajar ya! 😊`;
-            badge = "https://i.imgur.com/8e3YVhE.png"; // Bronze badge
-            badgeText.textContent = "Kamu mendapatkan Lencana Perunggu!";
-        } else {
-            message = "Jangan menyerah! Coba lagi ya! 💪";
-            badgeText.textContent = "Terus berlatih untuk mendapatkan lencana!";
-        }
-        
-        finalMessageElement.textContent = message;
-        if (badge) {
-            badgeImage.src = badge;
-            badgeImage.style.display = 'block';
-        } else {
-            badgeImage.style.display = 'none';
-        }
-        
-        gameContent.style.display = 'block';
-        gameContent.innerHTML = `
-            <div class="welcome-screen">
-                <h3>Petualangan Evaluasi Peta</h3>
-                <p>Ingin mencoba lagi untuk meningkatkan skormu?</p>
-                <button id="startGame" class="game-button">Main Lagi</button>
-            </div>
-        `;
-        document.getElementById('startGame').addEventListener('click', startGame);
-    }
-
-    function showChildFriendlyError(error) {
-    const messages = {
-    PERMISSION_DENIED: "Kita tidak bisa menemukan lokasimu karena izin belum diberikan. Mintalah bantuan guru atau orang tua!",
-    POSITION_UNAVAILABLE: "Lokasimu tidak bisa ditemukan sekarang. Coba lagi nanti ya!",
-    TIMEOUT: "Pencarian lokasi terlalu lama. Pastikan kamu terhubung ke internet!",
-    UNKNOWN_ERROR: "Ada masalah kecil. Jangan khawatir, kita bisa mencoba lagi!"
-    };
-    locationStatus.innerHTML = `<span style="color: #e91e63;">${messages[error.code] || messages.UNKNOWN_ERROR}</span>`;
-}
-            
-            // Fungsi untuk menampilkan halaman tertentu
-            function showPage(pageIndex) {
-                // Sembunyikan semua halaman
-                pages.forEach(page => {
-                    page.classList.remove('active');
-                });
-                
-                // Tampilkan halaman yang dipilih
-                pages[pageIndex].classList.add('active');
-                
-                // Update tombol navigasi
-                prevBtn.disabled = pageIndex === 0;
-                nextBtn.disabled = pageIndex === totalPages - 1;
-                
-                // Update indikator halaman
-                pageIndicator.textContent = `Halaman ${pageIndex + 1} dari ${totalPages}`;
-                
-                // Scroll ke atas halaman
-                window.scrollTo(0, 0);
-            }
-            
-            // Tombol sebelumnya
-            prevBtn.addEventListener('click', function() {
-                if (currentPage > 0) {
-                    currentPage--;
-                    showPage(currentPage);
-                }
-            });
-            
-            // Tombol selanjutnya
-            nextBtn.addEventListener('click', function() {
-                if (currentPage < totalPages - 1) {
-                    currentPage++;
-                    showPage(currentPage);
-                }
-            });
-            
-            // Tampilkan halaman pertama saat memulai
-            showPage(currentPage);
-            
-            // Tambahkan navigasi keyboard
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'ArrowLeft' && !prevBtn.disabled) {
-                    prevBtn.click();
-                } else if (e.key === 'ArrowRight' && !nextBtn.disabled) {
-                    nextBtn.click();
-                }
-            });
-            
-
-             // Fungsi untuk menampilkan pesan error
-        function showLocationError(error) {
-            const errorMessages = {
-                PERMISSION_DENIED: "Anda tidak memberikan izin untuk mengakses lokasi. Silakan coba lagi dan berikan izin.",
-                POSITION_UNAVAILABLE: "Lokasi tidak dapat ditentukan saat ini. Pastikan GPS/sinyal baik.",
-                TIMEOUT: "Proses pencarian lokasi terlalu lama. Coba lagi nanti.",
-                UNKNOWN_ERROR: "Terjadi kesalahan saat mencari lokasi. Silakan coba lagi."
-            };
-
-            locationStatus.innerHTML = `<span class="error-message">${errorMessages[error.code] || errorMessages.UNKNOWN_ERROR}</span>`;
-        }
-
-        playButton.addEventListener('click', function() {
-    locationStatus.textContent = "Mendeteksi lokasi Anda...";
-    
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            function(position) {
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
-                
-                // Cek apakah Street View tersedia di koordinat ini
-                checkStreetViewAvailability(lat, lng)
-                    .then((available) => {
-                        if (available) {
-                            // Jika tersedia, buka Street View langsung
-                            const streetViewUrl = `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${lat},${lng}&hl=id`;
-                            window.open(streetViewUrl, '_blank');
-                            locationStatus.innerHTML = `Lokasi ditemukan!<br>Membuka Street View di lokasi Anda...`;
-                        } else {
-                            // Jika tidak tersedia, cari Street View terdekat
-                            const mapsUrl = `https://www.google.com/maps/@${lat},${lng},15z/data=!3m1!4b1!4m2!6m1!1s1paGqpeXxrZ3HZ3hJZfZbZfZbZfZbZfZb?hl=id`;
-                            window.open(mapsUrl, '_blank');
-                            locationStatus.innerHTML = `Lokasi ditemukan!<br>Membuka peta dengan Street View terdekat...`;
-                        }
-                    });
-            },
-            function(error) {
-                showLocationError(error);
-            }
-        );
-    } else {
-        locationStatus.innerHTML = '<span class="error-message">Browser Anda tidak mendukung fitur geolokasi</span>';
-    }
-});
-
-// Fungsi untuk memeriksa ketersediaan Street View (simulasi)
-function checkStreetViewAvailability(lat, lng) {
-    return new Promise((resolve) => {
-        // Di implementasi nyata, Anda bisa menggunakan Google Maps JavaScript API
-        // Ini hanya simulasi sederhana
-        const rand = Math.random();
-        resolve(rand > 0.3); // 70% kemungkinan tersedia (contoh saja)
-    });
-}
-            
-            // Optimasi untuk perangkat mobile
-            let touchStartX = 0;
-            let touchEndX = 0;
-            
-            document.addEventListener('touchstart', function(e) {
-                touchStartX = e.changedTouches[0].screenX;
-            }, false);
-            
-            document.addEventListener('touchend', function(e) {
-                touchEndX = e.changedTouches[0].screenX;
-                handleSwipe();
-            }, false);
-            
-            function handleSwipe() {
-                if (touchEndX < touchStartX - 50 && !nextBtn.disabled) {
-                    // Geser ke kiri (next)
-                    nextBtn.click();
-                }
-                
-                if (touchEndX > touchStartX + 50 && !prevBtn.disabled) {
-                    // Geser ke kanan (prev)
-                    prevBtn.click();
-                }
-            }
-        });
-    </script>
 </body>
 </html>
